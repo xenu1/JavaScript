@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+
+<html>
+<body>
+
+<style>
+	table {
+		border-collapse: collapse;
+	}
+	#ttt_table td {
+		font-size: 50px;
+		font-weight: bold;
+		height: 100px;
+		width: 100px;
+	}
+	.center {
+		text-align: center;
+	}
+	.marginauto {
+		margin: auto;
+	}
+	button.restart {
+		cursor: pointer;
+	    display: inline-block;
+	    min-height: 1em;
+	    outline: 0;
+	    border: none;
+	    background: #446392;
+	    color: #fff;
+	    padding: 10px 17px;
+	    font-weight: 500;
+	    font-size: 15px;
+	    text-align: center;
+	    border-radius: 3px;
+	    margin: auto;
+	}
+</style>
+
+<h1 class="center">Tic - Tac - Toe</h1>
+
+<table id="ttt_table" class="center marginauto">
+	<tr>
+		<td id="pos1" onclick="ttt_click(1);" style="border-right: 10px solid #000; border-bottom: 10px solid #000;"></td>
+		<td id="pos2" onclick="ttt_click(2);" style="border-right: 10px solid #000; border-bottom: 10px solid #000;"></td>
+		<td id="pos3" onclick="ttt_click(3);" style="border-bottom: 10px solid #000;"></td>
+	</tr>
+	<tr>
+		<td id="pos4" onclick="ttt_click(4);" style="border-right: 10px solid #000; border-bottom: 10px solid #000;"></td>
+		<td id="pos5" onclick="ttt_click(5);" style="border-right: 10px solid #000; border-bottom: 10px solid #000;"></td>
+		<td id="pos6" onclick="ttt_click(6);" style="border-bottom: 10px solid #000;"></td>
+	</tr>
+	<tr>
+		<td id="pos7" onclick="ttt_click(7);" style="border-right: 10px solid #000;"></td>
+		<td id="pos8" onclick="ttt_click(8);" style="border-right: 10px solid #000;"></td>
+		<td id="pos9" onclick="ttt_click(9);"></td>
+	</tr>
+</table>
+
+<h2 class="center" id="status">It is X's turn</h2>
+<center>
+	<button class="restart" id="restartBtn" style="display: none" onclick="location.reload()">Restart</button>
+</center>
+
+<script>
+var gameOver = false;
+var whoseTurn = 'X';
+var posArray = [false,false,false,false,false,false,false,false,false,false];
+var winningSets = [
+	[1,2,3],
+	[4,5,6],
+	[7,8,9],
+	[1,4,7],
+	[2,5,8],
+	[3,6,9],
+	[1,5,9],
+	[3,5,7]
+];
+var winner;
+var turn = 1;
+
+function ttt_click(posClicked)
+{	
+	if(gameOver)
+		return false;
+
+	if(!posArray[posClicked]) {
+		posArray[posClicked] = whoseTurn;
+		document.getElementById('pos' + posClicked).innerHTML = whoseTurn;
+
+		if(whoseTurn == 'X')
+			whoseTurn = 'O';
+		else
+			whoseTurn = 'X';
+
+		document.getElementById('status').innerHTML = "It is " + whoseTurn + "'s turn";
+
+		checkStatus();
+
+		turn++;
+	}
+}
+
+function checkStatus()
+{
+	if(turn == 9) {
+		document.getElementById('status').innerHTML = "Game over! It's a tie!";
+		document.getElementById('restartBtn').style.display = 'inline-block';
+
+		gameOver = true;
+
+		return;
+	}
+
+	for(var i = 0; i < 8; i++) {
+		if(posArray[winningSets[i][0]]) {
+			if(posArray[winningSets[i][0]] == posArray[winningSets[i][1]] && posArray[winningSets[i][0]] == posArray[winningSets[i][2]]) {
+				if(whoseTurn == 'X')
+					winner = 'O';
+				else
+					winner = 'X';
+
+				document.getElementById('status').innerHTML = "Game over! " + winner + "'s won!";
+				document.getElementById('restartBtn').style.display = 'inline-block';
+
+				gameOver = true;
+			}
+		}
+	}
+	
+	return false;
+}
+</script>
+</body>
+</html>
